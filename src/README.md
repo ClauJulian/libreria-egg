@@ -21,7 +21,7 @@ Este proyecto es un sistema de gestión de una librería que permite administrar
 ## Instalación y Configuración
 1. Clonar el repositorio del proyecto:
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+   git clone https://github.com/ClauJulian/libreria-egg.git
    ```
 2. Configurar la base de datos MySQL:
    - Crear una base de datos llamada `libreria`.
