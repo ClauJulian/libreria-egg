@@ -57,6 +57,34 @@ public class LibroServicio {
         }
     }
 
+    public void actualizarLibro(int isbn, String titulo, int anio, int ejemplares, int idAutor, int idEditorial) {
+        try {
+            boolean libroExistente = validarLibroExistentePorIsbn(isbn);
+
+            if (libroExistente) {
+                Autor autor = autorDAO.buscarAutor(idAutor);
+                Editorial editorial = editorialDAO.buscarEditorial(idEditorial);
+
+                Libro libro = libroDAO.buscarLibro(isbn);
+
+                libro.setTitulo(titulo);
+                libro.setAnio(anio);
+                libro.setEjemplares(ejemplares);
+                libro.setAutor(autor);
+                libro.setEditorial(editorial);
+                libro.setAlta(true);
+
+                libroDAO.actualizarLibro(libro);
+
+            } else {
+                crearLibro(titulo, anio, ejemplares, idAutor, idEditorial);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.toString() + ":: No se pudo actualizar el Libro correctamente");
+        }
+    }
+
     //consultas
     public Libro buscarLibroPorIsbn(int isbn) {
         Libro libro = libroDAO.buscarLibro(isbn);
@@ -125,7 +153,7 @@ public class LibroServicio {
         }
     }
 
-    public void listarLibros(){
+    public void listarLibros() {
         try {
             List<Libro> libros = libroDAO.listarTodos();
             imprimirLista(libros);
@@ -151,6 +179,17 @@ public class LibroServicio {
             tituloExistente = false;
         }
         return tituloExistente;
+    }
+
+    public Boolean validarLibroExistentePorIsbn(int isbn) {
+        Boolean libroExistente = true;
+
+        Libro libro = libroDAO.buscarLibro(isbn);
+
+        if (libro == null) {
+            libroExistente = false;
+        }
+        return libroExistente;
     }
 
 }

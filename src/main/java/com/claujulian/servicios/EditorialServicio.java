@@ -33,12 +33,24 @@ public class EditorialServicio {
         }
     }
 
-    public void actualizarEditorial(Editorial editorial) {
+
+    public void actualizarEditorial(int id, String nombre) {
         try {
-            editorialDAO.actualizarEditorial(editorial);
+            if (validarEditorialExistentePorId(id)) {
+                Editorial editorial = editorialDAO.buscarEditorial(id);
+
+                editorial.setNombre(nombre);
+
+                editorialDAO.actualizarEditorial(editorial);
+
+            } else {
+
+                System.out.println(":: No existe editorial con el id suministrado");
+            }
         } catch (Exception e) {
-            System.out.println("Error al actualizar la editorial: " + e.getMessage());
+            System.out.println(":: No se pudo realizar la actualización solicitada");
         }
+
     }
 
     public void buscarEditorialPorNombre(String nombre) {
@@ -87,6 +99,34 @@ public class EditorialServicio {
         }
     }
 
+    
+
+    public Editorial buscarEditorial(int idEditorialAModificar) {
+        try {
+            Editorial editorial = editorialDAO.buscarEditorial(idEditorialAModificar);
+            if (editorial != null) {
+                return editorial;
+            } else {
+                System.out.println("No se encontró la editorial con ID: " + idEditorialAModificar);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al buscar la editorial: " + e.getMessage());
+        }
+        return null;
+    }
+
+    
+    public Boolean validarEditorialExistentePorId(int id) {
+        Boolean editorialExistente = true;
+
+        Editorial editorial = editorialDAO.buscarEditorial(id);
+
+        if (editorial == null) {
+            editorialExistente = false;
+        }
+        return editorialExistente;
+    }
+
     public Boolean validarEditorialExistente(String nombre) {
         Boolean editorialExistente = true;
 
@@ -97,4 +137,5 @@ public class EditorialServicio {
         }
         return editorialExistente;
     }
+    
 }
